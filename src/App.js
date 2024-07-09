@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import UseState from "./components/UseState";
+import Table from "./components/Table";
+
+let Heading = () =>
+  React.createElement(
+    "h1",
+    { className: "title", id: "h1" },
+    "Starting today I am revising my reactjs knowledge..."
+  );
+
+let Header = ({ content }) => (
+  <header className="App-header">
+    <ul>
+      {content.map((v, i) => (
+        <li key={i}>{v}...</li>
+      ))}
+    </ul>
+  </header>
+);
+
+let Content = (props) => {
+  let { paragraph } = props;
+  return (
+    <div className="">
+      <p>{paragraph}</p>
+      <button>Click me</button>
+    </div>
+  );
+};
 
 function App() {
+  let arr = ["welcome", "to", "my", "react", "services"];
+  let paragraph =
+    "Now I am trying to revise my MERN Stack knowledge and then I will learn blockchain technology than I can freelance efficiently on both MERN Stack and blockchain technology.";
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Heading />
+      <Header content={arr} />
+      <Content paragraph={paragraph} />
+      <UseState />
+      <Table />
     </div>
   );
 }

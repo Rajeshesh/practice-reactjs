@@ -1,7 +1,8 @@
-import React from "react";
-import UseState from "./components/UseState";
+import React, { createContext, useState } from "react";
 import Table from "./components/Table";
-
+import UseLayoutEffect from "./components/UseLayoutEffect";
+import TextTruncate from "react-text-truncate";
+import MetaData from "./components/MetaData";
 let Heading = () =>
   React.createElement(
     "h1",
@@ -21,25 +22,41 @@ let Header = ({ content }) => (
 
 let Content = (props) => {
   let { paragraph } = props;
+  let allImage = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   return (
     <div className="">
       <p>{paragraph}</p>
+      <TextTruncate line={2} element="p" truncateText="..." text={paragraph} />
+
       <button>Click me</button>
     </div>
   );
 };
 
+export const UseCan = createContext();
+
 function App() {
-  let arr = ["welcome", "to", "my", "react", "services"];
+  const [state, setState] = useState([
+    "welcome",
+    "to",
+    "my",
+    "react",
+    "services",
+  ]);
   let paragraph =
     "Now I am trying to revise my MERN Stack knowledge and then I will learn blockchain technology than I can freelance efficiently on both MERN Stack and blockchain technology.";
   return (
     <div className="App">
-      <Heading />
-      <Header content={arr} />
-      <Content paragraph={paragraph} />
-      <UseState />
-      <Table />
+      <UseCan.Provider value={{ appState: { state, setState } }}>
+        <MetaData title={"Home page"} />
+
+        <Heading />
+        <Header content={state} />
+        {/* props drilling is parent to child and child to child */}
+        <Content paragraph={paragraph} />
+        <UseLayoutEffect />
+        <Table />
+      </UseCan.Provider>
     </div>
   );
 }

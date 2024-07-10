@@ -2,3 +2,10 @@ body {
   background: rgb(59, 58, 58);
   color: rgb(253, 213, 213);
 }
+
+a {
+  color: inherit;
+  background-color: inherit;
+  text-decoration: none;
+
+}

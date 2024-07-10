@@ -1,4 +1,12 @@
-import React, { useState } from "react";
+import React, {
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useState,
+} from "react";
+import { UseCan } from "../App";
 
 const Tbody = (twoProps) => {
   const { handleDelete, details } = twoProps;
@@ -25,7 +33,7 @@ const Table = () => {
     { name: "kunal", job: "Front-end Developer", id: 3 },
   ];
   const [state, setState] = useState(initialState);
-
+  const globalState = useContext(UseCan);
   //   const handleDelete = (id) => {
   //     const updatedList = state.filter((detail) => detail.id !== id);
   //     setState(updatedList);
@@ -34,15 +42,20 @@ const Table = () => {
     const updatedList = state.filter((detail, i) => i !== index);
     setState(updatedList);
   };
-  const addToTable = (data) => {
+  const addToTable = useCallback((data) => {
     data.id = state.length + 1;
     setState([...state, data]);
-  };
+  }, []);
+
 
   return (
     <div>
       <div>
         <h2>Table</h2>
+        <p>
+          {globalState.appState.state.join(", ")} it came from app.js by
+          useContext
+        </p>
         <table>
           <thead>
             <tr>
@@ -59,9 +72,13 @@ const Table = () => {
   );
 };
 
-const Form = ({ addToTable }) => {
+//addToTable is not give any values, so delete the table row is not give anything to form so i used useCallback with memo
+const Form = memo(({ addToTable }) => {
   const initialState = { name: "", job: "" };
   const [data, setData] = useState(initialState);
+
+  // to generate unique id across the whole application
+  const id = useId();
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -79,6 +96,7 @@ const Form = ({ addToTable }) => {
       <h2>Form to add data in Table</h2>
       <form onSubmit={submitForm}>
         <input
+          id={id + "name"}
           type="text"
           name="name"
           placeholder="Name"
@@ -86,6 +104,7 @@ const Form = ({ addToTable }) => {
           onChange={handleChange}
         />
         <input
+          id={id + "job"}
           type="text"
           name="job"
           value={data.job}
@@ -93,10 +112,9 @@ const Form = ({ addToTable }) => {
           onChange={handleChange}
         />
         <button>Add to Table</button>
-        
       </form>
     </div>
   );
-};
+});
 
 export default Table;
